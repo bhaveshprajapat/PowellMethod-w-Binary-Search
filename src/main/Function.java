@@ -1,5 +1,7 @@
 package main;
 
+import net.sourceforge.jeval.EvaluationException;
+
 public class Function {
 	/**
 	 * @param x
@@ -12,8 +14,26 @@ public class Function {
 	 *         2) + Math.pow(y - 2, 2);
 	 */
 	public static double output(double x, double y) {
-		return
+
 		// Insert function here:
-		Math.pow(x - 2, 2) + Math.pow(y - 2, 2);
+		if (Main.udFunction) {
+			Main.evaluator.putVariable("x", String.valueOf(x));
+			Main.evaluator.putVariable("y", String.valueOf(y));
+			try {
+				return Double.parseDouble(Main.evaluator.evaluate(Main.function));
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return 0;
+			} catch (EvaluationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return 0;
+			}
+		} else {
+			return Math.pow((x - 169), 2) + Math.pow((y - 228), 2);
+			
+		}
+
 	}
 }
