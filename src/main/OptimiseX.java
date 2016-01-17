@@ -1,39 +1,39 @@
 package main;
-
-//To be changed in accordance  to Optimise Y's releveance to X
 public class OptimiseX {
-
+	/**
+	 * @param y The y co-ordinate to remain constant during execution
+	 */
 	public static void optimise(final double y) {
-		double fOflowerBound = Function.output(y, Main.lowerBound[1]);
-		double fOfupperBound = Function.output(y, Main.upperBound[1]);
-		double fOfXAndY = Function.output(y, Main.startPoint[1]);
-		if (fOflowerBound > fOfupperBound && fOflowerBound > fOfXAndY) {
-			Main.lowerBound[1] = Main.startPoint[1];
-		}
-		if (fOfupperBound > fOflowerBound && fOfupperBound > fOfXAndY) {
-			Main.upperBound[1] = Main.startPoint[1];
-		}
-		double[] midpoint = new double[2];
-		midpoint[0] = y;
-		midpoint[1] = (Main.upperBound[1] + Main.lowerBound[1]) / 2;
-		while (true) {
-
-			fOflowerBound = Function.output(y, Main.lowerBound[1]);
-			fOfupperBound = Function.output(y, Main.upperBound[1]);
-			fOfXAndY = Function.output(y, midpoint[1]);
-			if (fOflowerBound > fOfupperBound && fOflowerBound > fOfXAndY) {
-				Main.lowerBound[1] = midpoint[1];
-			}
-			if (fOfupperBound > fOflowerBound && fOfupperBound > fOfXAndY) {
-				Main.upperBound[1] = midpoint[1];
-			}
-			midpoint[1] = (Main.upperBound[1] + Main.lowerBound[1]) / 2;
-
-			if (StopCriteria.stop(Function.output(y, Main.upperBound[1]), Function.output(y, Main.lowerBound[1]))) {
-				break;
-			}
-		} // End Loop
-		System.out.println("Optimal value for Y found at :" + midpoint[0] + ", " + midpoint[1]);
-
+		//Declare vars for storing Z (f(x,y))
+				double fOfLowerBound;
+				double fOfUpperBound;
+				double fOfXAndY; //Current midpoint
+				double[] midpoint = new double[2];
+				//As we are only optimising X, Y will remain constant
+				midpoint[1] = y;
+				//Sets the midpoint based on the new bounds
+				midpoint[0] = (Main.upperBound[0] + Main.lowerBound[0]) / 2;
+				while (true) {
+					//Calculates f(x,y) for the upper bound, lower bound and midpoint
+					fOfLowerBound = Function.output( Main.lowerBound[0], y);
+					fOfUpperBound = Function.output(Main.upperBound[0],y);
+					fOfXAndY = Function.output(midpoint[0],y);
+					//Casts out the highest bound
+					if (fOfLowerBound > fOfUpperBound && fOfLowerBound > fOfXAndY) {
+						Main.lowerBound[0] = midpoint[0];
+					}
+					if (fOfUpperBound > fOfLowerBound && fOfUpperBound > fOfXAndY) {
+						Main.upperBound[0] = midpoint[0];
+					}
+					//Generates a new midpoint
+					midpoint[0] = (Main.upperBound[0] + Main.lowerBound[0]) / 2;
+					//Calculates whether we should stop
+					if (StopCriteria.stop(Function.output(Main.upperBound[0],y), Function.output(Main.lowerBound[0],y))) {
+						break;
+					}
+				} 
+				//System.out.println("Optimal value for x found at :" + midpoint[0] + ", " + y);
+				Main.currentPoint[0] = midpoint[0];
+				Main.currentPoint[1] =y;
 	}
 }
